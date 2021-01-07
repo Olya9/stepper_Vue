@@ -12,11 +12,19 @@
         <h1>План по изучению Vue.js</h1>
 
         <div class="steps">
-          <div class="steps-content" v-for="(step, idx) in steps">
-            {{idx===activeIndex? step.text:''}}
+          <div
+            class="steps-content"
+            v-for="(stepText, idx) in steps"
+            :key="stepText.text"
+          >
+            {{idx===activeIndex? stepText.text:''}}
           </div>
           <ul class="steps-list">
-            <li class="steps-item" v-for="(step, idx) in steps">
+            <li
+              class="steps-item"
+              v-for="(step, idx) in steps"
+              :key="step.title"
+            >
               <button
                 :class="{'active': activeIndex>idx, 'primary': activeIndex===idx}"
                 @click="setActive(idx)"
