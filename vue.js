@@ -1,12 +1,8 @@
-// вы можете как угодно изменять программу и код
-// добавлять любые переменные и модели
-// ваша задача реализовать так, как показано на видео, чтобы оно работало
-
 const App = {
   data() {
     return {
       activeIndex: 0,
-      isShowNextOrFinishButton: true,
+      isActive: true,
 
       steps: [
         {
@@ -39,34 +35,38 @@ const App = {
   },
   methods: {
     prev() {
-      this.activeIndex--;
-    },
-    reset() {
-      if (this.nextOrFinishButton === "Закончить") {
-        this.activeIndex = 0;
-        this.isShowNextOrFinishButton = true;
+      if (this.activeIndex !== 0) {
+        this.activeIndex--;
       }
     },
+    reset() {
+      this.activeIndex = 0;
+      this.isActive = true;
+    },
     nextOrFinish() {
-      this.activeIndex++;
+      if (this.activeIndex !== this.steps.length - 1) {
+        this.activeIndex++;
+      } else {
+        this.isActive = false;
+      }
     },
     setActive(idx) {
       this.activeIndex = idx;
     },
-    showButton() {
-      if (this.prevButton === "Начать заново") {
-        this.isShowNextOrFinishButton = !this.isShowNextOrFinishButton;
-      }
-    },
   },
   computed: {
-    nextOrFinishButton() {
-      return this.activeIndex < this.steps.length - 1 ? "Вперед" : "Закончить";
+    isLastStep() {
+      return this.activeIndex === this.steps.length - 1;
     },
-    prevButton() {
-      return this.activeIndex < this.steps.length ? "Назад" : "Начать заново";
+    disabledPrevButton() {
+      return this.activeIndex === 0;
+    },
+    activeStep() {
+      return this.steps[this.activeIndex];
     },
   },
 };
 
 Vue.createApp(App).mount("#app");
+
+

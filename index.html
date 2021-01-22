@@ -14,43 +14,33 @@
         <div class="steps">
           <div
             class="steps-content"
-            v-for="(stepText, idx) in steps"
-            :key="stepText.text"
+            v-for="(step, idx) in steps"
+            :key="step.text"
           >
-            {{idx===activeIndex? stepText.text:''}}
+            {{idx===activeIndex? step.text:''}}
           </div>
           <ul class="steps-list">
             <li
               class="steps-item"
               v-for="(step, idx) in steps"
               :key="step.title"
+              :class="{active: idx ===activeIndex, done: idx < activeIndex}"
             >
-              <button
-                :class="{'active': activeIndex>idx, 'primary': activeIndex===idx}"
-                @click="setActive(idx)"
-                class="btn"
-              >
-                {{idx+1}}
-              </button>
+              <span @click="setActive(idx)"> {{idx+1}} </span>
               {{step.title}}
             </li>
           </ul>
 
-          <div>
-            <button
-              class="btn"
-              :disabled="activeIndex===0"
-              @click="prev();reset();"
-            >
-              {{prevButton}}
+          <div v-if="isActive">
+            <button class="btn" :disabled="disabledPrevButton" @click="prev">
+              Назад
             </button>
-            <button
-              class="btn primary"
-              @click="nextOrFinish();showButton();"
-              v-show="isShowNextOrFinishButton"
-            >
-              {{nextOrFinishButton}}
+            <button class="btn primary" @click="nextOrFinish">
+              {{ isLastStep ? 'Закончить' : 'Вперед' }}
             </button>
+          </div>
+          <div v-else>
+            <button class="btn" @click="reset">Начать заново</button>
           </div>
         </div>
       </div>
